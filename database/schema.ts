@@ -82,3 +82,22 @@ export const verification = mysqlTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+export const post = mysqlTable(
+  "post", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at", { fsp: 3 }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { fsp: 3 })
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  authorId: varchar("author_id", { length: 36 })
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+},
+  (table) => [index("post_authorId_idx").on(table.authorId),
+  index("post_createdAt_idx").on(table.createdAt),
+  index("post_updatedAt_idx").on(table.updatedAt),
+  ],
+);
