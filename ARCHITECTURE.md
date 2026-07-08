@@ -95,12 +95,12 @@ This document describes how **rnd-nextjs-template** is structured: runtime stack
 | `eslint-config-next` | `16.2.4` | Next.js ESLint preset |
 | `drizzle-kit` | `^0.31.10` | Migrations / Drizzle CLI (`drizzle.config.ts`) |
 
-### npm scripts (database)
+### Bun scripts (database)
 
 | Script | Command | Purpose |
 |--------|---------|---------|
 | `db:generate` | `drizzle-kit generate` | Generate migration SQL from schema changes |
-| `db:migrate` | `npx tsx scripts/migrate.mts` | Run migrations programmatically (shows errors clearly) |
+| `db:migrate` | `bun run scripts/migrate.mts` | Run migrations programmatically (shows errors clearly) |
 | `db:push` | `drizzle-kit push` | Push schema directly (dev only) |
 | `db:studio` | `drizzle-kit studio` | Open Drizzle Studio |
 
@@ -429,9 +429,9 @@ Desktop-first public page (`max-w-[1360px]`):
 
 ### Push notifications
 
-1. Generate VAPID keys: `npx web-push generate-vapid-keys`
+1. Generate VAPID keys: `bunx web-push generate-vapid-keys`
 2. Set `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` in `.env`
-3. Run dev with HTTPS: `npx next dev --experimental-https`
+3. Run dev with HTTPS: `bunx next dev --experimental-https`
 4. Open `/landing` or home → Subscribe → Send test
 
 `push.actions.ts` skips AAA (demo only; in-memory subscription). Production apps should persist subscriptions in the database.
@@ -505,8 +505,8 @@ UI follows **[DESIGN.MD](./DESIGN.MD)** — light-only, no dark mode.
 
 ```bash
 docker compose up -d
-npm run db:migrate
-npm run dev
+bun run db:migrate
+bun run dev
 ```
 
 | Setting | Default |
@@ -523,7 +523,7 @@ npm run dev
 |---------|-----|
 | `Unknown database 'rnd_template'` | Wrong port in `.env` — use `3307` for Docker |
 | `Failed to get session` after container restart | MySQL was down; wait for `ready for connections`, restart dev server |
-| Schema out of date | `npm run db:generate` then `npm run db:migrate` |
+| Schema out of date | `bun run db:generate` then `bun run db:migrate` |
 
 ---
 
@@ -585,7 +585,7 @@ flowchart LR
 
 | Step | Path | What to do |
 |------|------|------------|
-| 1 | `database/schema.ts` | Add table. Run `npm run db:generate` + `npm run db:migrate`. |
+| 1 | `database/schema.ts` | Add table. Run `bun run db:generate` + `bun run db:migrate`. |
 | 2 | `lib/entities/<table>.type.ts` | `$inferSelect`, `$inferInsert`, result types, constants. |
 | 3 | `lib/domain/usecases/<table>/` | One file per operation. Reads: `"use cache"`. Writes: `updateTag`. |
 | 4 | `lib/domain/services/<table>.service.ts` | Compose use cases. |
@@ -1034,7 +1034,7 @@ export async function proxy(request: NextRequest) {
     "start": "next start",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "npx tsx scripts/migrate.mts",
+    "db:migrate": "bun run scripts/migrate.mts",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio"
   },
