@@ -320,7 +320,7 @@ Types are inferred from Drizzle exports where applicable. Permission checks live
 
 - Reads session via `getSessionFromHeaders()` from `auth.service`.
 - **Auth paths** (redirect to `/` when already signed in): `/sign-in`, `/sign-up`.
-- **Public paths** (no sign-in required): `/sign-in`, `/sign-up`, `/landing`.
+- **Public paths** (no sign-in required): `/`, `/posts`, `/sign-in`, `/sign-up`, `/landing`.
 - Unauthenticated on protected routes → redirect to `/sign-in?callbackURL=...`.
 
 ### Auth UI
@@ -1000,10 +1000,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionFromHeaders } from "@/lib/domain/services/auth.service";
 
 const authPaths = ["/sign-in", "/sign-up"];
-const publicPaths = ["/sign-in", "/sign-up", "/landing"];
+const publicPaths = ["/", "/posts", "/sign-in", "/sign-up", "/landing"];
 
 function matchesPath(pathname: string, paths: string[]) {
-  return paths.some((path) => pathname === path || pathname.startsWith(`${path}/`));
+  return paths.some((path) => {
+    if (path === "/") {
+      return pathname === "/";
+    }
+    return pathname === path || pathname.startsWith(`${path}/`);
+  });
 }
 
 export async function proxy(request: NextRequest) {
