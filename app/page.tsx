@@ -41,6 +41,10 @@ async function HomeContent() {
           <Link href="/users" className={primaryLinkClass}>
             View Users
           </Link>
+          <Link href="/posts" className={primaryLinkClass}>
+            View Blog Posts
+          </Link>
+
           <Link href="/landing" className={secondaryLinkClass}>
             Install app
           </Link>
