@@ -22,6 +22,7 @@
  */
 
 import { redirect } from "next/navigation";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { auth } from "@/lib/domain/services/auth.service";
 import {
     createPost,
@@ -190,6 +191,7 @@ export async function createPostAction(formData: FormData) {
 
         redirect(redirectTo);
     } catch (error) {
+        if (isRedirectError(error)) throw error;
         const message = getErrorMessage(error);
         await logAction({ userId: "unknown", action, success: false, error: message });
         redirect(`${redirectTo}?error=${encodeURIComponent(message)}`);
@@ -255,6 +257,7 @@ export async function updatePostAction(formData: FormData) {
 
         redirect(redirectTo);
     } catch (error) {
+        if (isRedirectError(error)) throw error;
         const message = getErrorMessage(error);
         await logAction({
             userId: "unknown",
@@ -320,6 +323,7 @@ export async function deletePostAction(formData: FormData) {
 
         redirect(redirectTo);
     } catch (error) {
+        if (isRedirectError(error)) throw error;
         const message = getErrorMessage(error);
         await logAction({
             userId: "unknown",
