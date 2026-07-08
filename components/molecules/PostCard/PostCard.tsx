@@ -8,9 +8,10 @@ import type { PostSelect } from "@/lib/entities/posts.type";
 interface PostCardProps {
     post: PostSelect;
     redirectTo?: string;
+    canManage?: boolean;
 }
 
-export const PostCard = ({ post, redirectTo = "/posts" }: PostCardProps) => {
+export const PostCard = ({ post, redirectTo = "/posts", canManage = true }: PostCardProps) => {
     const { isEditing, setIsEditing, handleDelete, handleUpdate } = usePostCard(redirectTo);
 
     if (isEditing) {
@@ -49,14 +50,16 @@ export const PostCard = ({ post, redirectTo = "/posts" }: PostCardProps) => {
                 <h2 className="text-xl font-bold text-on-surface mb-2">{post.title}</h2>
                 <p className="text-sm text-on-surface-muted whitespace-pre-wrap">{post.content}</p>
             </div>
-            <div className="flex justify-end gap-2">
-                <Button onClick={() => setIsEditing(true)} variant="secondary">
-                    Edit
-                </Button>
-                <Button onClick={() => handleDelete(post.id)} variant="danger">
-                    Delete
-                </Button>
-            </div>
+            {canManage ? (
+                <div className="flex justify-end gap-2">
+                    <Button onClick={() => setIsEditing(true)} variant="secondary">
+                        Edit
+                    </Button>
+                    <Button onClick={() => handleDelete(post.id)} variant="danger">
+                        Delete
+                    </Button>
+                </div>
+            ) : null}
         </div>
     );
 };

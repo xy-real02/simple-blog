@@ -8,9 +8,10 @@ interface PostsTableProps {
     posts: PostSelect[];
     redirectTo?: string;
     error?: string;
+    canManage?: boolean;
 }
 
-export const PostsTable = ({ posts, redirectTo = "/posts", error }: PostsTableProps) => {
+export const PostsTable = ({ posts, redirectTo = "/posts", error, canManage = true }: PostsTableProps) => {
     const { postsData } = usePostsTable({ posts });
 
     return (
@@ -28,7 +29,7 @@ export const PostsTable = ({ posts, redirectTo = "/posts", error }: PostsTablePr
             ) : (
                 <div className="grid gap-6">
                     {postsData.map((post) => (
-                        <PostCard key={post.id} post={post} redirectTo={redirectTo} />
+                        <PostCard key={post.id} post={post} redirectTo={redirectTo} canManage={canManage} />
                     ))}
                 </div>
             )}

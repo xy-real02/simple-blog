@@ -60,20 +60,11 @@ export async function getPostsAction(): Promise<PostResult<PostSelect[]>> {
     const permission = USER_PERMISSION.POSTS_READ;
 
     try {
-        // 1. Authentication
+        // 1. Authentication (Optional for read-only blog listing)
         const userSession = await auth();
-        if (!userSession || userSession.expired) {
-            await logAction({
-                userId: "anonymous",
-                action,
-                success: false,
-                error: "Authentication required.",
-            });
-            return { ok: false, error: "Authentication required." };
-        }
 
-        // 2. Authorization
-        if (!hasPermission(userSession.user.role, permission)) {
+        // 2. Authorization (If user is signed in, check their role permission; if anonymous, allow read)
+        if (userSession && !hasPermission(userSession.user.role, permission)) {
             await logAction({
                 userId: userSession.user.id,
                 action,
@@ -88,10 +79,10 @@ export async function getPostsAction(): Promise<PostResult<PostSelect[]>> {
 
         // 3. Accounting
         await logAction({
-            userId: userSession.user.id,
+            userId: userSession?.user?.id ?? "anonymous",
             action,
             success: true,
-            role: userSession.user.role,
+            role: userSession?.user?.role,
         });
 
         return { ok: true, data: posts };
@@ -109,18 +100,8 @@ export async function getPostByIdAction(id: string): Promise<PostResult<PostSele
 
     try {
         const userSession = await auth();
-        if (!userSession || userSession.expired) {
-            await logAction({
-                userId: "anonymous",
-                action,
-                success: false,
-                error: "Authentication required.",
-                metadata: { targetPostId: id },
-            });
-            return { ok: false, error: "Authentication required." };
-        }
 
-        if (!hasPermission(userSession.user.role, permission)) {
+        if (userSession && !hasPermission(userSession.user.role, permission)) {
             await logAction({
                 userId: userSession.user.id,
                 action,
@@ -135,10 +116,10 @@ export async function getPostByIdAction(id: string): Promise<PostResult<PostSele
         const post = await getPostById(id);
 
         await logAction({
-            userId: userSession.user.id,
+            userId: userSession?.user?.id ?? "anonymous",
             action,
             success: true,
-            role: userSession.user.role,
+            role: userSession?.user?.role,
             metadata: { targetPostId: id },
         });
 
