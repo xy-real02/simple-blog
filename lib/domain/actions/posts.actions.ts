@@ -38,6 +38,7 @@ import {
 import type {
     PostResult,
     PostSelect,
+    PostWithAuthor,
 } from "@/lib/entities/posts.type";
 
 
@@ -55,7 +56,7 @@ function getErrorMessage(error: unknown): string {
 }
 
 /** Read action — list all blog posts. */
-export async function getPostsAction(): Promise<PostResult<PostSelect[]>> {
+export async function getPostsAction(): Promise<PostResult<PostWithAuthor[]>> {
     const action = "posts:list";
     const permission = USER_PERMISSION.POSTS_READ;
 
@@ -94,7 +95,7 @@ export async function getPostsAction(): Promise<PostResult<PostSelect[]>> {
 }
 
 /** Read action — get single post by ID. */
-export async function getPostByIdAction(id: string): Promise<PostResult<PostSelect | null>> {
+export async function getPostByIdAction(id: string): Promise<PostResult<PostWithAuthor | null>> {
     const action = "posts:get";
     const permission = USER_PERMISSION.POSTS_READ;
 

@@ -1,12 +1,12 @@
-import type { PostSelect } from "@/lib/entities/posts.type";
+import type { PostSelect, PostWithAuthor } from "@/lib/entities/posts.type";
 import { useEffect, useState } from "react";
 
 interface PostsTableProps {
-    posts: PostSelect[];
+    posts: (PostSelect | PostWithAuthor)[];
 }
 
 export const usePostsTable = ({ posts }: PostsTableProps) => {
-    const [postsData, setPostsData] = useState<PostSelect[]>(posts);
+    const [postsData, setPostsData] = useState<(PostSelect | PostWithAuthor)[]>(posts);
 
     useEffect(() => {
         setPostsData(posts);

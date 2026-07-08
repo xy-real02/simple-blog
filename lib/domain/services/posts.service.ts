@@ -8,14 +8,15 @@ import type {
   DeletePostInput,
   PostResult,
   PostSelect,
+  PostWithAuthor,
   UpdatePostInput,
 } from "@/lib/entities/posts.type";
 
-export async function getPosts(): Promise<PostSelect[]> {
+export async function getPosts(): Promise<PostWithAuthor[]> {
   return getPostsUseCase();
 }
 
-export async function getPostById(id: string): Promise<PostSelect | null> {
+export async function getPostById(id: string): Promise<PostWithAuthor | null> {
   return getPostByIdUseCase(id);
 }
 

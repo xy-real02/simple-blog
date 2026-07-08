@@ -1,11 +1,11 @@
 "use client";
 
-import type { PostSelect } from "@/lib/entities/posts.type";
+import type { PostSelect, PostWithAuthor } from "@/lib/entities/posts.type";
 import { PostCard } from "@/components/molecules/PostCard/PostCard";
 import { usePostsTable } from "./postsTable.hooks";
 
 interface PostsTableProps {
-    posts: PostSelect[];
+    posts: (PostSelect | PostWithAuthor)[];
     redirectTo?: string;
     error?: string;
     canManage?: boolean;
