@@ -18,6 +18,7 @@ export async function deletePost(input: DeletePostInput): Promise<PostResult> {
             .where(eq(post.id, input.id));
 
         updateTag("posts");
+        updateTag(`post:${input.id}`);
 
         return { ok: true, data: undefined };
     } catch (error) {

@@ -1,9 +1,14 @@
+import { cacheLife, cacheTag } from "next/cache";
 import { eq } from "drizzle-orm";
 import { database } from "@/database";
 import { post, user } from "@/database/schema";
 import type { PostWithAuthor } from "@/lib/entities/posts.type";
 
 export async function getPostById(id: string): Promise<PostWithAuthor | null> {
+    "use cache";
+    cacheLife("minutes");
+    cacheTag(`post:${id}`);
+
     try {
         const rows = await database
             .select({

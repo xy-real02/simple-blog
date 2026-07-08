@@ -22,6 +22,7 @@ export async function updatePost(input: UpdatePostInput): Promise<PostResult> {
             .where(eq(post.id, input.id));
 
         updateTag("posts");
+        updateTag(`post:${input.id}`);
 
         return { ok: true, data: undefined };
     } catch (error) {

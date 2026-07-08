@@ -2,13 +2,20 @@
 
 import { redirect } from "next/navigation";
 import {
+  auth,
   signIn,
   signOut,
   signUp,
 } from "@/lib/domain/services/auth.service";
+import type { ActionSession } from "@/lib/entities/auth.type";
 
 function readField(formData: FormData, name: string): string {
   return String(formData.get(name) ?? "").trim();
+}
+
+/** Returns the current user session with role, or null if unauthenticated. */
+export async function getSessionAction(): Promise<ActionSession | null> {
+  return auth();
 }
 
 export async function signInAction(formData: FormData) {

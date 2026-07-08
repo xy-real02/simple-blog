@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { getPostsAction } from "@/lib/domain/actions/posts.actions";
-import { auth } from "@/lib/domain/services/auth.service";
+import { getSessionAction } from "@/lib/domain/actions/auth.actions";
 import { PostsTable } from "@/components/organisms/PostsTable/PostsTable";
 import { CreatePostForm } from "@/components/organisms/CreatePostForm/CreatePostForm";
 
@@ -31,7 +31,7 @@ function PostsFallback() {
 
 async function PostsContent({ searchParams }: PostsPageProps) {
     const params = await searchParams;
-    const [result, userSession] = await Promise.all([getPostsAction(), auth()]);
+    const [result, userSession] = await Promise.all([getPostsAction(), getSessionAction()]);
     const isAdmin = userSession?.user?.role === "admin";
 
     return (

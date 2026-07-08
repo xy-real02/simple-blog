@@ -2,8 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { useButtonStyles } from "@/components/atoms/Button/button.hooks";
 import { PwaPanel } from "@/components/organisms/PwaPanel/PwaPanel";
-import { signOutAction } from "@/lib/domain/actions/auth.actions";
-import { getSession } from "@/lib/domain/services/auth.service";
+import { signOutAction, getSessionAction } from "@/lib/domain/actions/auth.actions";
 
 function HomeFallback() {
   return (
@@ -19,7 +18,7 @@ function HomeFallback() {
 }
 
 async function HomeContent() {
-  const session = await getSession();
+  const session = await getSessionAction();
   const primaryLinkClass = useButtonStyles("primary");
   const secondaryLinkClass = useButtonStyles("secondary");
 
